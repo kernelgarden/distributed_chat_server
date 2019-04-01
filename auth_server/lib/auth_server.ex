@@ -1,0 +1,2 @@
+defmodule AuthServer do
+end
