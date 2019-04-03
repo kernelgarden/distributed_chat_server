@@ -17,8 +17,9 @@ defmodule LookupServer.Monitor do
   """
   @impl true
   def handle_info({:register, node}, state) do
-    Logger.info(fn -> "Reigter node - #{inspect node}!" end)
+    Logger.info(fn -> "Reigter node - #{inspect(node)}!" end)
     LookupServer.Agent.register(node)
+    Node.monitor(node, true)
     {:noreply, state}
   end
 
@@ -34,9 +35,8 @@ defmodule LookupServer.Monitor do
 
   @impl true
   def handle_info({:nodedown, down_node}, state) do
-    Logger.info(fn -> "Delete node - #{inspect down_node}!" end)
+    Logger.info(fn -> "Delete node - #{inspect(down_node)}!" end)
     LookupServer.Agent.delete(down_node)
     {:noreply, state}
   end
-
 end

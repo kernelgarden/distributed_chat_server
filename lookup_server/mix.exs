@@ -15,14 +15,12 @@ defmodule LookupServer.MixProject do
   def application do
     [
       extra_applications: [:logger],
-
       mod: {LookupServer.Application, []}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [
-    ]
+    []
   end
 end

@@ -10,5 +10,4 @@ defmodule LookupServer.Application do
       strategy: :one_for_one
     )
   end
-
 end

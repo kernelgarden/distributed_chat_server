@@ -1,5 +1,4 @@
 defmodule LookupServer.NodeInfo do
-
   alias __MODULE__
 
   defstruct name: "",
@@ -14,5 +13,4 @@ defmodule LookupServer.NodeInfo do
   def to_node_identifier(node_info) do
     :"#{node_info.name}@#{node_info.host}"
   end
-
 end
