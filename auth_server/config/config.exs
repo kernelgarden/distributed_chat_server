@@ -22,3 +22,11 @@ config :freddie,
   packet_type_mod: AuthServer.Protocol.Types,
   # Type packet handler mod (derive from Freddie.Router)
   packet_handler_mod: AuthServer.Handler
+
+config :auth_server, AuthServer.Repo,
+  database: "auth_server_repo",
+  username: "root",
+  password: "tabstorage",
+  hostname: "localhost"
+
+config :auth_server, ecto_repos: [AuthServer.Repo]

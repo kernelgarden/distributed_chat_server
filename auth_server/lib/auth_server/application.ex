@@ -6,6 +6,7 @@ defmodule AuthServer.Application do
   def start(_type, _args) do
     Supervisor.start_link(
       [
+        AuthServer.Repo,
         {Freddie, [activate_eprof: true, activate_fprof: true]}
       ],
       strategy: :one_for_one
