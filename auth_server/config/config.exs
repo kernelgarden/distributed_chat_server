@@ -25,4 +25,9 @@ config :freddie,
 
 config :auth_server, ecto_repos: [AuthServer.Repo]
 
+config :auth_server,
+  lookup_server_list: [
+    :lookup_server_001@localhost
+  ]
+
 import_config "#{Mix.env()}.exs"
