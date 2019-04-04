@@ -8,7 +8,6 @@ defmodule ChatServer.ChatRoom.Supervisor do
     DynamicSupervisor.start_link(__MODULE__, args, name: __MODULE__)
   end
 
-  @spec start_child(integer()) :: :ignore | {:error, any()} | {:ok, pid()} | {:ok, pid(), any()}
   def start_child(room_info) do
     DynamicSupervisor.start_child(__MODULE__, {ChatServer.ChatRoom, room_info})
   end
