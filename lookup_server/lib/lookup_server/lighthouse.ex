@@ -12,7 +12,7 @@ defmodule LookupServer.Lighthouse do
     # Lighthouse 프로세스가 다운되면 Node간의 연결이 끊기게 된다.
     # 따라서 모든 Node들에 연결을 다시 수립한다.
     LookupServer.Agent.get_node_keys_stream()
-    |> Stream.map(&(LookupServer.Agent.trans_key_to_node(&1)))
+    |> Stream.map(&LookupServer.Agent.trans_key_to_node(&1))
     |> Stream.filter(fn key -> key != nil end)
     |> Stream.each(fn node -> Node.monitor(node, true) end)
     |> Stream.run()

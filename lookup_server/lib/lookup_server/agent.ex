@@ -41,8 +41,9 @@ defmodule LookupServer.Agent do
   @spec lookup_group(binary()) :: [NodeInfo.t()]
   def lookup_group(target_group) do
     query =
-      fun do {_node_name, group, node_info} when group == ^target_group ->
-        node_info
+      fun do
+        {_node_name, group, node_info} when group == ^target_group ->
+          node_info
       end
 
     :ets.select(@cache_table, query)
@@ -51,8 +52,9 @@ defmodule LookupServer.Agent do
   @spec lookup(binary()) :: [NodeInfo.t()]
   def lookup(target_node_name) do
     query =
-      fun do {node_name, _group, node_info} when node_name == ^target_node_name ->
-        node_info
+      fun do
+        {node_name, _group, node_info} when node_name == ^target_node_name ->
+          node_info
       end
 
     :ets.select(@cache_table, query)
@@ -62,7 +64,9 @@ defmodule LookupServer.Agent do
     Stream.resource(
       fn -> :ets.first(@cache_table) end,
       fn
-        :"$end_of_table" -> {:halt, nil}
+        :"$end_of_table" ->
+          {:halt, nil}
+
         prev_key ->
           {[prev_key], :ets.next(@cache_table, prev_key)}
       end,
@@ -90,5 +94,4 @@ defmodule LookupServer.Agent do
       [{_name, _group, node_info} | _] -> NodeInfo.to_node_identifier(node_info)
     end
   end
-
 end
