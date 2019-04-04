@@ -22,7 +22,8 @@ defmodule LookupServer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex2ms, "~> 1.5"}
+      {:ex2ms, "~> 1.5"},
+      {:ex_hash_ring, "~> 3.0"}
     ]
   end
 end

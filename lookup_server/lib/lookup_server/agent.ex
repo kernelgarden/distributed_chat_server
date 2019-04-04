@@ -49,15 +49,28 @@ defmodule LookupServer.Agent do
     :ets.select(@cache_table, query)
   end
 
+  @spec lookup(atom()) :: [NodeInfo.t()]
+  def lookup(target_node) when is_atom(target_node) do
+    [name, _host] =
+      target_node
+      |> to_string()
+      |> String.split("@")
+
+    lookup(name)
+  end
+
   @spec lookup(binary()) :: [NodeInfo.t()]
-  def lookup(target_node_name) do
+  def lookup(target_node_name) when is_binary(target_node_name) do
     query =
       fun do
         {node_name, _group, node_info} when node_name == ^target_node_name ->
           node_info
       end
 
-    :ets.select(@cache_table, query)
+    case :ets.select(@cache_table, query) do
+      [] -> nil
+      [result | _] -> result
+    end
   end
 
   def get_node_keys_stream() do
