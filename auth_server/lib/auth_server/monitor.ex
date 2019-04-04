@@ -8,10 +8,8 @@ defmodule AuthServer.Monitor do
   defp attach_to_lookup_server do
     Application.get_env(:auth_server, :lookup_server_list, [])
     |> Enum.each(fn lookup_server_node ->
-      IO.puts("#{inspect lookup_server_node}")
       Node.connect(lookup_server_node)
-      |> IO.inspect(label: "Debug => ")
-      send({:"Elixir.LookupServer.Monitor", lookup_server_node}, {:register, node()})
+      send({:"Elixir.LookupServer.Lighthouse", lookup_server_node}, {:register, "auth", node()})
     end)
   end
 
@@ -25,5 +23,4 @@ defmodule AuthServer.Monitor do
   def handle_info(_unknown_msg, state) do
     {:noreply, state}
   end
-
 end

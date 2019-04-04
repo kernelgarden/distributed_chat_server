@@ -2,7 +2,7 @@ defmodule AuthServer.RepoCase do
   use ExUnit.CaseTemplate
 
   using do
-    quote  do
+    quote do
       alias AuthServer.Repo
 
       import Ecto
@@ -20,5 +20,4 @@ defmodule AuthServer.RepoCase do
 
     :ok
   end
-
 end
