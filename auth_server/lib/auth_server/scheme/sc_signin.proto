@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message SC_Signin {
+    Result result = 1;
+}

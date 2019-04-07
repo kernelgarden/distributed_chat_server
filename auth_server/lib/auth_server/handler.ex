@@ -5,6 +5,14 @@ defmodule AuthServer.Handler do
 
   alias AuthServer.Handler
 
+  defhandler AuthServer.Scheme.CS_Signin do
+
+  end
+
+  defhandler AuthServer.Scheme.CS_Signup do
+
+  end
+
   # define connnection event handler
   connect do
     Logger.info("Client #{inspect(context)} is connected!")

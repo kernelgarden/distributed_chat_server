@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message SC_Signup {
+    Result result = 1;
+    string server_ip = 2;
+    string server_port = 3;
+}
