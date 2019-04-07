@@ -1,4 +1,4 @@
-defmodule AuthServer.Monitor do
+defmodule AuthServer.Compass do
   use GenServer
 
   def start_link(_args) do
