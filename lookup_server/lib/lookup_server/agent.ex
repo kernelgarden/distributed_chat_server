@@ -49,7 +49,7 @@ defmodule LookupServer.Agent do
     :ets.select(@cache_table, query)
   end
 
-  @spec lookup(atom()) :: [NodeInfo.t()]
+  @spec lookup(atom()) :: NodeInfo.t()
   def lookup(target_node) when is_atom(target_node) do
     [name, _host] =
       target_node
@@ -59,7 +59,7 @@ defmodule LookupServer.Agent do
     lookup(name)
   end
 
-  @spec lookup(binary()) :: [NodeInfo.t()]
+  @spec lookup(binary()) :: NodeInfo.t()
   def lookup(target_node_name) when is_binary(target_node_name) do
     query =
       fun do
