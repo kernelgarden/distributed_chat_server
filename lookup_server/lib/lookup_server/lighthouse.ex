@@ -6,29 +6,31 @@ defmodule LookupServer.Lighthouse do
   alias ExHashRing.HashRing, as: Ring
 
   defstruct chat_node_ring: nil,
-            subscribed_pids: []
+            subscribed_info: %{}
 
   def start_link(_args) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  defp publish_hash_ring(%__MODULE__{
-         chat_node_ring: chat_node_ring,
-         subscribed_pids: subscribed_pids
-       } = mod) do
-    new_subscribed_pids =
-      subscribed_pids
-      |> Enum.map(&do_publish_hash_ring(&1, chat_node_ring))
-      |> IO.inspect(label: "Debug => ")
-      |> Enum.filter(&(&1 != nil))
+  defp publish_hash_ring(
+         %__MODULE__{
+           chat_node_ring: chat_node_ring,
+           subscribed_info: subscribed_info
+         } = mod
+       ) do
+    new_subscribed_info =
+      subscribed_info
+      |> Stream.map(&do_publish_hash_ring(&1, chat_node_ring))
+      |> Stream.filter(&(&1 != nil))
+      |> Enum.into(%{})
 
-    %__MODULE__{mod | subscribed_pids: new_subscribed_pids}
+    %__MODULE__{mod | subscribed_info: new_subscribed_info}
   end
 
-  defp do_publish_hash_ring(pid, chat_node_ring) do
+  defp do_publish_hash_ring({_node, pid} = node_info, chat_node_ring) do
     try do
       send(pid, {:publish_hash_ring, chat_node_ring})
-      pid
+      node_info
     rescue
       _ -> nil
     end
@@ -51,6 +53,8 @@ defmodule LookupServer.Lighthouse do
         {:ok, ring} = Ring.add_node(acc, node_info.name)
         ring
       end)
+
+    # Todo: Subscribed 됐던 노드들 다시 캐시해야된다. 클라이언트에서 붙여야할듯
 
     {:ok, %__MODULE__{chat_node_ring: chat_node_ring}}
   end
@@ -76,7 +80,7 @@ defmodule LookupServer.Lighthouse do
           Ring.add_node(chat_node_ring, node_name)
           |> IO.inspect(label: "Debug => ring: ")
 
-        # Todo: ring publish 처리 추가
+        # subscribe 중인 노드들에 hash ring의 변화를 통지한다.
         %__MODULE__{state | chat_node_ring: chat_node_ring}
         |> publish_hash_ring()
       else
@@ -107,26 +111,31 @@ defmodule LookupServer.Lighthouse do
   end
 
   @doc """
-  Use like send({:"Elixir.LookupServer.Lighthouse", :lookup_server_001@localhost}, {:subscribe_hash_ring, self()})
+  Use like send({:"Elixir.LookupServer.Lighthouse", :lookup_server_001@localhost}, {:subscribe_hash_ring, self(), node()})
   """
   @impl true
-  def handle_info({:subscribe_hash_ring, request_pid}, state) do
-    Logger.info("Add Subscribe node - #{inspect(request_pid)}")
-    new_state = %__MODULE__{state | subscribed_pids: [request_pid | state.subscribed_pids]}
-    do_publish_hash_ring(request_pid, new_state.chat_node_ring)
+  def handle_info({:subscribe_hash_ring, request_pid, node}, state) do
+    Logger.info("Add Subscribe node - #{inspect(node)} , pid - #{inspect(request_pid)}")
+
+    new_state = %__MODULE__{
+      state
+      | subscribed_info: Map.put(state.subscribed_info, node, request_pid)
+    }
+
+    do_publish_hash_ring({node, request_pid}, new_state.chat_node_ring)
 
     {:noreply, new_state}
   end
 
   @impl true
-  def handle_info({:nodedown, down_node}, %__MODULE__{chat_node_ring: chat_node_ring} = state) do
+  def handle_info(
+        {:nodedown, down_node},
+        %__MODULE__{chat_node_ring: chat_node_ring, subscribed_info: subscribed_info} = state
+      ) do
     Logger.info("Delete node - #{inspect(down_node)}!")
 
-    # Todo: 구독중인 노드 갱신 버그 픽스 해야된다.
-    new_subscribed_pids =
-      state.subscribed_pids
-      |> Enum.filter(&(&1 != down_node))
-    new_state = %__MODULE__{state | subscribed_pids: new_subscribed_pids}
+    # down된 node가 subscribe 중인 노드라면 리스트에서 지워준다.
+    new_state = %__MODULE__{state | subscribed_info: Map.delete(subscribed_info, down_node)}
 
     new_state =
       case LookupServer.Agent.lookup(down_node) do
@@ -140,8 +149,8 @@ defmodule LookupServer.Lighthouse do
               Ring.remove_node(chat_node_ring, node_info.name)
               |> IO.inspect(label: "Debug => ring: ")
 
-            # Todo: publish to subscribed nodes
-            %__MODULE__{new_state | chat_node_ring: chat_node_ring, subscribed_pids: new_subscribed_pids}
+            # subscribe 중인 노드들에 hash ring의 변화를 통지한다.
+            %__MODULE__{new_state | chat_node_ring: chat_node_ring}
             |> publish_hash_ring()
           else
             new_state
