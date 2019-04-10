@@ -26,7 +26,7 @@ defmodule EchoServer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:freddie, "~> 0.1.3"},
+      {:freddie, "~> 0.1.4"},
       {:ecto_sql, "~> 3.0.5"},
       {:mariaex, "~> 0.9.1"},
       {:bcrypt_elixir, "~> 2.0"}

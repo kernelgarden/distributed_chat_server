@@ -24,7 +24,7 @@ defmodule EchoServer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:freddie, "~> 0.1.3"}
+      {:freddie, "~> 0.1.4"}
     ]
   end
 end
