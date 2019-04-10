@@ -6,11 +6,13 @@ defmodule AuthServer.Handler do
   alias AuthServer.Handler
 
   defhandler AuthServer.Scheme.CS_Signin do
-
+    {meta, msg, context}
+    |> Handler.Signin.handle()
   end
 
   defhandler AuthServer.Scheme.CS_Signup do
-
+    {meta, msg, context}
+    |> Handler.Signup.handle()
   end
 
   # define connnection event handler

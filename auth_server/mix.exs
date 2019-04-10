@@ -1,4 +1,4 @@
-defmodule EchoServer.MixProject do
+defmodule AuthServer.MixProject do
   use Mix.Project
 
   def project do
@@ -38,7 +38,7 @@ defmodule EchoServer.MixProject do
 
   defp aliases do
     [
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      db_test: ["ecto.drop", "ecto.create", "ecto.migrate", "test"]
     ]
   end
 end
