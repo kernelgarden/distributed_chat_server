@@ -38,7 +38,7 @@ defmodule LookupServer.Agent do
     do_delete(name)
   end
 
-  @spec lookup_group(binary()) :: [NodeInfo.t()]
+  @spec lookup_group(any()) :: {:lookup_group, [NodeInfo.t()]}
   def lookup_group(target_group) do
     query =
       fun do
@@ -46,7 +46,7 @@ defmodule LookupServer.Agent do
           node_info
       end
 
-    :ets.select(@cache_table, query)
+    {:lookup_group, :ets.select(@cache_table, query)}
   end
 
   @spec lookup(atom()) :: NodeInfo.t()
@@ -59,7 +59,7 @@ defmodule LookupServer.Agent do
     lookup(name)
   end
 
-  @spec lookup(binary()) :: NodeInfo.t()
+  @spec lookup(binary()) :: {:lookup, NodeInfo.t()}
   def lookup(target_node_name) when is_binary(target_node_name) do
     query =
       fun do
@@ -67,10 +67,13 @@ defmodule LookupServer.Agent do
           node_info
       end
 
-    case :ets.select(@cache_table, query) do
-      [] -> nil
-      [result | _] -> result
-    end
+    node =
+      case :ets.select(@cache_table, query) do
+        [] -> nil
+        [result | _] -> result
+      end
+
+    {:lookup, node}
   end
 
   def get_node_keys_stream() do
