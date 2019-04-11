@@ -8,6 +8,8 @@ defmodule AuthServer.Handler.Signin do
   alias AuthServer.Model.User
   alias AuthServer.Scheme.SC_Signin
 
+  @redis_session_counter "unique:session:counter"
+
   def handle(request) do
     data = elem(request, 1)
     context = elem(request, 2)
