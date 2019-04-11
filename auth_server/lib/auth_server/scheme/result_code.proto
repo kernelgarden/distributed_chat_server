@@ -8,4 +8,7 @@ message Result {
 enum ResultCode {
     none = 1;
     inexists = 2;
+    exists = 3;
+    unknown = 4;
+    invalid = 5;
 }

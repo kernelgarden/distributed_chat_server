@@ -2,4 +2,7 @@ syntax = "proto3";
 
 message SC_Signin {
     Result result = 1;
+
+    string server_ip = 2;
+    string server_port = 3;
 }

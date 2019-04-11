@@ -8,13 +8,12 @@ defmodule AuthServer.UserTest do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(AuthServer.Repo)
   end
 
-  test "create user2" do
+  test "create user" do
   end
 
-  test "auth user2" do
+  test "auth user" do
   end
 
-  test "delete user2" do
+  test "delete user" do
   end
-
 end
