@@ -47,8 +47,10 @@ defmodule LookupServer.Lighthouse do
     |> Stream.each(fn node -> Node.monitor(node, true) end)
     |> Stream.run()
 
+    {:lookup_group, groups} = LookupServer.Agent.lookup_group("chat")
+
     chat_node_ring =
-      LookupServer.Agent.lookup_group("chat")
+      groups
       |> Enum.reduce(Ring.new(), fn node_info, acc ->
         {:ok, ring} = Ring.add_node(acc, node_info.name)
         ring
@@ -139,10 +141,10 @@ defmodule LookupServer.Lighthouse do
 
     new_state =
       case LookupServer.Agent.lookup(down_node) do
-        nil ->
+        {:lookup, nil} ->
           new_state
 
-        node_info ->
+        {:lookup, node_info} ->
           # down된 node가 chat node라면 hash ring을 갱신한다.
           if node_info.group == "chat" do
             {:ok, chat_node_ring} =

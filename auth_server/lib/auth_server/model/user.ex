@@ -26,7 +26,7 @@ defmodule AuthServer.Model.User do
     Repo.get_by(User, user_id: user_id)
   end
 
-  def authenticate(nil, _password)  do
+  def authenticate(nil, _password) do
     false
   end
 

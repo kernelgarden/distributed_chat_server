@@ -11,8 +11,8 @@ defmodule AuthServer.UserTest do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(AuthServer.Repo)
 
     %User{}
-      |> User.changeset(%{user_id: "test_id", password: "password", name: "testman"})
-      |> Repo.insert()
+    |> User.changeset(%{user_id: "test_id", password: "password", name: "testman"})
+    |> Repo.insert()
 
     user = Repo.get_by(User, user_id: "test_id")
 
@@ -80,7 +80,5 @@ defmodule AuthServer.UserTest do
       |> User.authenticate(fake_request2.password)
 
     assert result == false
-
   end
-
 end
