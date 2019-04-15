@@ -45,6 +45,8 @@ defmodule AuthServer.Handler.Signin do
           {:ok, session_key} ->
             access_token = Helper.make_rand_string()
 
+            # Todo: user가 속한 room_list를 갱신해야 한다.
+
             # Todo: 유령 세션, 세션 별 gc 전략 고려해서 추가 해야할듯.. 몇초안에 로비 통과 하지 않으면 떨군다던지
             Redis.transaction_pipeline([
               # 부여받은 session key로 user 정보 update
@@ -54,7 +56,9 @@ defmodule AuthServer.Handler.Signin do
                 "user_id",
                 user.user_id,
                 "access_token",
-                access_token
+                access_token,
+                "room_list",
+                user.room_list
               ],
 
               # 로비 서버에 연결된 세션 추가
