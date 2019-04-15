@@ -3,5 +3,7 @@ syntax = "proto3";
 message SC_Join {
     Result result = 1;
 
-    repeated Room rooms = 2;
+    // 유저가 가입되어 있는 방 id들
+    repeated int32 room_ids = 2;
+    //repeated Room rooms = 2;
 }

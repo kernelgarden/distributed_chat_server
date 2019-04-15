@@ -5,5 +5,6 @@ message Room {
     string name = 2;
     string invite_code = 3;
     User owner = 4;
-    repeated User members = 5;
+    // 유저 정보는 room에 유저가 입장하면 그떄 받아오는 걸로 한다.
+    //repeated User members = 5;
 }
