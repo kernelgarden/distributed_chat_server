@@ -43,6 +43,8 @@ defmodule AuthServer.Handler.Signin do
         # session key를 우선 발급 받는다.
         case Redis.command(["INCR", @redis_session_counter]) do
           {:ok, session_key} ->
+            access_token = Helper.make_rand_string()
+
             # Todo: 유령 세션, 세션 별 gc 전략 고려해서 추가 해야할듯.. 몇초안에 로비 통과 하지 않으면 떨군다던지
             Redis.transaction_pipeline([
               # 부여받은 session key로 user 정보 update
@@ -52,7 +54,7 @@ defmodule AuthServer.Handler.Signin do
                 "user_id",
                 user.user_id,
                 "access_token",
-                Helper.make_rand_string()
+                access_token
               ],
 
               # 로비 서버에 연결된 세션 추가
@@ -67,7 +69,8 @@ defmodule AuthServer.Handler.Signin do
               result: Helper.make_result(true, :none),
               server_ip: "127.0.0.1",
               server_port: "5055",
-              session_key: to_string(session_key)
+              session_key: to_string(session_key),
+              access_token: access_token
             )
 
           # 세션키 발급 실패

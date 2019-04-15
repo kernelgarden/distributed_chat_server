@@ -6,4 +6,5 @@ message SC_Signin {
     string server_ip = 2;
     string server_port = 3;
     string session_key = 4;
+    string access_token = 5;
 }
