@@ -1,4 +1,4 @@
-defmodule EchoServer.MixProject do
+defmodule LobbyServer.MixProject do
   use Mix.Project
 
   def project do
@@ -16,7 +16,7 @@ defmodule EchoServer.MixProject do
     [
       extra_applications: [:logger],
 
-      # Start EchoServer Applicaion
+      # Start LobbyServer Applicaion
       mod: {LobbyServer.Application, []}
     ]
   end
@@ -24,7 +24,9 @@ defmodule EchoServer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:freddie, "~> 0.1.4"}
+      {:freddie, "~> 0.1.4"},
+      {:fastglobal, "~> 1.0"},
+      {:ex_hash_ring, "~> 3.0"}
     ]
   end
 end

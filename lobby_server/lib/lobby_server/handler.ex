@@ -5,6 +5,11 @@ defmodule LobbyServer.Handler do
 
   alias LobbyServer.Handler
 
+  defhandler LobbyServer.Scheme.CS_Join do
+    {meta, msg, context}
+    |> Handler.Join.handle()
+  end
+
   # define connnection event handler
   connect do
     Logger.info("Client #{inspect(context)} is connected!")

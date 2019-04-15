@@ -22,3 +22,8 @@ config :freddie,
   packet_type_mod: LobbyServer.Protocol.Types,
   # Type packet handler mod (derive from Freddie.Router)
   packet_handler_mod: LobbyServer.Handler
+
+config :lobby_server,
+  lookup_server_list: [
+    :lookup_server_001@localhost
+  ]

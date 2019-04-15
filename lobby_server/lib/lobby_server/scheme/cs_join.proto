@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message CS_Join {
+    string user_id = 1;
+    string access_token = 2;
+    string session_key = 3;
+}

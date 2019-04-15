@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message SC_Join {
+    Result result = 1;
+
+    repeated Room rooms = 2;
+}

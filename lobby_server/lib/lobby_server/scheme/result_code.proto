@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message Result {
+    bool is_success = 1;
+    ResultCode code = 2;
+}
+
+enum ResultCode {
+    none = 1;
+    inexists = 2;
+    exists = 3;
+    unknown = 4;
+    invalid = 5;
+    server_is_busy = 6;
+}

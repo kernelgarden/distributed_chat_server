@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message Room {
+    int32 id = 1;
+    string name = 2;
+    string invite_code = 3;
+    User owner = 4;
+    repeated User members = 5;
+}
