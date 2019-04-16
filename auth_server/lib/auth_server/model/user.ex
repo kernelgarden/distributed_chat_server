@@ -11,6 +11,7 @@ defmodule AuthServer.Model.User do
     field(:user_id, :string)
     field(:hashed_password, :string)
     field(:password, :string, virtual: true)
+    has_many(:rooms, AuthServer.Model.Room)
     timestamps()
   end
 
