@@ -6,6 +6,7 @@ defmodule ChatServer.Application do
   def start(_type, _args) do
     Supervisor.start_link(
       [
+        ChatServer.Repo,
         ChatServer.ChatRoom.Supervisor,
         ChatServer.ChatRoom.Registry,
       ],

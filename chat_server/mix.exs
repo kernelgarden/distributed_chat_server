@@ -1,4 +1,4 @@
-defmodule EchoServer.MixProject do
+defmodule ChatServer.MixProject do
   use Mix.Project
 
   def project do
@@ -24,6 +24,8 @@ defmodule EchoServer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ecto_sql, "~> 3.0"},
+      {:mariaex, "~> 0.9.1"}
     ]
   end
 end
