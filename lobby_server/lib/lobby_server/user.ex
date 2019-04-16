@@ -29,10 +29,12 @@ defmodule LobbyServer.User do
     {:ok, user_info}
   end
 
+  @impl true
   def handle_cast(:kill, state) do
     {:stop, :normal, state}
   end
 
+  @impl true
   def handle_info(_unknown_msg, state) do
     {:noreply, state}
   end
