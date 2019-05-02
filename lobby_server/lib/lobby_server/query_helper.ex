@@ -1,5 +1,4 @@
 defmodule LobbyServer.QueryHelper do
-
   require Logger
 
   @spec query(binary(), [any()]) :: {:ok, [map()]} | {:error, any()}
@@ -10,21 +9,19 @@ defmodule LobbyServer.QueryHelper do
       |> parse_query()
     rescue
       e in ArgumentError ->
-        Logger.error(fn -> "[QueryHelper] Mismatched arguments! - #{inspect e}" end)
+        Logger.error(fn -> "[QueryHelper] Mismatched arguments! - #{inspect(e)}" end)
         {:error, e}
 
       other ->
-        Logger.error(fn -> "[QueryHelper] Error occured! - #{inspect other}" end)
+        Logger.error(fn -> "[QueryHelper] Error occured! - #{inspect(other)}" end)
         {:error, other}
     end
-
   end
 
   @spec parse_query(Mariaex.Result.t()) :: [map()]
   defp parse_query(result) do
     case result.num_rows > 0 do
       true -> do_parse_query(result)
-
       false -> []
     end
   end
@@ -38,8 +35,8 @@ defmodule LobbyServer.QueryHelper do
 
     result =
       result.rows
-      |> Stream.map(&(Stream.zip(columns, &1)))
-      |> Enum.map(&(Enum.into(&1, %{})))
+      |> Stream.map(&Stream.zip(columns, &1))
+      |> Enum.map(&Enum.into(&1, %{}))
 
     result
   end

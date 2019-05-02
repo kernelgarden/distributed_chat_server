@@ -28,7 +28,7 @@ defmodule LobbyServer.Handler.Join do
           if user_id == data.user_id && access_token == data.access_token do
             # user가 속한 room_list 구해서 유저한테 뿌려줘야한다. room에는 user들의 정보도 들어간다.
             # Todo: room_list 추가되면 여기도 추가
-            Freddie.Context.put(context, :user, User.new(user_id, []))
+            Freddie.Context.put(context, :user, User.new(user_id, data.session_key, []))
 
             SC_Join.new(result: Helper.make_result(true, :none))
           else
