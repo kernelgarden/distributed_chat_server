@@ -23,7 +23,11 @@ config :freddie,
   # Type packet handler mod (derive from Freddie.Router)
   packet_handler_mod: LobbyServer.Handler
 
+config :lobby_server, ecto_repos: [LobbyServer.Repo]
+
 config :lobby_server,
   lookup_server_list: [
     :lookup_server_001@localhost
   ]
+
+import_config "#{Mix.env()}.exs"

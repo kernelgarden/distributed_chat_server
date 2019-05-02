@@ -26,7 +26,9 @@ defmodule LobbyServer.MixProject do
     [
       {:freddie, "~> 0.1.4"},
       {:fastglobal, "~> 1.0"},
-      {:ex_hash_ring, "~> 3.0"}
+      {:ex_hash_ring, "~> 3.0"},
+      {:ecto_sql, "~> 3.0.5"},
+      {:mariaex, "~> 0.9.1"}
     ]
   end
 end
