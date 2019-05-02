@@ -1,2 +1,0 @@
-defmodule UserServer do
-end
