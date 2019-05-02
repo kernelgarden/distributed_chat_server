@@ -14,7 +14,7 @@ defmodule LobbyServer.QueryHelper do
         {:error, e}
 
       other ->
-        Logger.error(fn -> "[QueryHelper] Error occured! - #{inspect e}" end)
+        Logger.error(fn -> "[QueryHelper] Error occured! - #{inspect other}" end)
         {:error, other}
     end
 
